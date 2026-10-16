@@ -3,7 +3,6 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
 // Register a new user
 export const registerUser = async (req, res) => {
     try {
@@ -282,15 +281,37 @@ export const forgotPassword = async (req, res) => {
 
             await user.save();
 
-            const transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST,
-                port: Number(process.env.SMTP_PORT) || 587,
-                secure: Number(process.env.SMTP_PORT) === 465,
-                auth: {
-                    user: process.env.SMTP_USER,
-                    pass: process.env.SMTP_PASS
+            const sendResetEmail = async (to, resetLink) => {
+                const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+                    method: "POST",
+                    headers: {
+                        "accept": "application/json",
+                        "api-key": process.env.BREVO_API_KEY,
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        sender: {
+                            name: "ExpenseTracker",
+                            email: process.env.SMTP_FROM
+                        },
+                        to: [{ email: to }],
+                        subject: "Reset Your ExpenseTracker Password",
+                        htmlContent: `
+                <h2>Password Reset</h2>
+                <p>We received a request to reset your password.</p>
+                <p>
+                    <a href="${resetLink}">Reset Password</a>
+                </p>
+                <p>If you did not request this, you can ignore this email.</p>
+            `
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(`Brevo API error (${response.status}): ${error}`);
                 }
-            });
+            };
 
             const frontendUrl = process.env.FRONTEND_URL?.replace(/\/+$/, "");
 
@@ -299,26 +320,11 @@ export const forgotPassword = async (req, res) => {
             }
 
             const resetLink =
-                `${frontendUrl}/frontend/reset-password.html?token=${resetToken}`;
+                `${frontendUrl}/reset-password.html?token=${resetToken}`;
 
 
             try {
-                await transporter.sendMail({
-                    from: {
-                        name: "Expense Tracker",
-                        address: process.env.SMTP_FROM
-                    },
-                    to: user.email,
-                    subject: "Expense Tracker - Password Reset",
-                    text: `We received a request to reset your Expense Tracker password.
-
-                    Open this link to create a new password:
-                    ${resetLink}
-
-                    This link expires in 15 minutes and can be used only once.
-
-                    If you did not request this, you can ignore this email.`
-                });
+                await sendResetEmail(user.email, resetLink);
             } catch (emailError) {
                 user.passwordResetToken = undefined;
                 user.passwordResetExpires = undefined;
