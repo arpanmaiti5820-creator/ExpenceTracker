@@ -1,6 +1,5 @@
 
-const API_BASE_URL = "http://localhost:5000/api/auth";
-
+const API_BASE_URL = "https://expencetracker-8lb7.onrender.com/api/auth";
 const loginForm = document.getElementById("loginForm");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");

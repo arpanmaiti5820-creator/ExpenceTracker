@@ -13,7 +13,7 @@ forgotPasswordForm.addEventListener("submit", async (event) => {
 
     try {
         const response = await fetch(
-            "http://localhost:5000/api/auth/forgot-password",
+            "https://expencetracker-8lb7.onrender.com/api/auth/forgot-password",
             {
                 method: "POST",
                 headers: {

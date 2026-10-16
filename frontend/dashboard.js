@@ -28,8 +28,7 @@ const trashCount = document.getElementById("trashCount");
 const emptyTrashBtn = document.getElementById("emptyTrashBtn");
 
 
-const API_BASE_URL = "http://localhost:5000/api/transactions";
-
+const API_BASE_URL = "https://expencetracker-8lb7.onrender.com/api/transactions";
 const authUser = JSON.parse(
     sessionStorage.getItem("authUser") || "null"
 );

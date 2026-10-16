@@ -42,7 +42,7 @@ resetPasswordForm.addEventListener("submit", async (event) => {
 
     try {
         const response = await fetch(
-            "http://localhost:5000/api/auth/reset-password",
+            "https://expencetracker-8lb7.onrender.com/api/auth/reset-password",
             {
                 method: "POST",
                 headers: {
