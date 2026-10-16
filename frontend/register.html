@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Expense Tracker</title>
+
+    <link rel="stylesheet" href="register.css">
+    <script src="register.js" defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+
+    <main class="register-container">
+
+        <!-- Left branding panel -->
+        <section class="register-brand">
+
+            <a href="index.html" class="brand-logo" aria-label="Expense Tracker home">
+                <span>ET</span>
+            </a>
+
+            <div class="brand-tagline">YOUR MONEY, YOUR FUTURE</div>
+
+            <h1>Start your journey to <span>financial freedom.</span></h1>
+
+            <p class="brand-description">
+                One simple place to understand your spending,
+                organize your income, and make smarter financial decisions.
+            </p>
+
+            <div class="brand-features">
+                <div class="feature-item">
+                    <span class="feature-icon">↗</span>
+                    <div>
+                        <h3>Understand your money</h3>
+                        <p>See where every rupee goes.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">◷</span>
+                    <div>
+                        <h3>Stay in control</h3>
+                        <p>Keep all transactions organized.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">✦</span>
+                    <div>
+                        <h3>Build better habits</h3>
+                        <p>Make progress toward your goals.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-footer">
+                A clearer view of your money starts here.
+            </div>
+
+        </section>
+
+        <!-- Registration form -->
+        <section class="register-form-section">
+
+            <div class="register-form-wrapper">
+
+                <div class="welcome-badge">
+                    <span class="badge-dot"></span>
+                    GET STARTED — IT'S FREE
+                </div>
+
+                <h2>Create your account</h2>
+
+                <p class="form-subtitle">
+                    Join us and take control of your finances.
+                </p>
+
+                <!-- Google registration button -->
+                <button type="button" class="google-register-button" id="googleRegisterButton">
+                    <span class="google-icon" aria-hidden="true">G</span>
+                    Continue with Google
+                </button>
+
+                <div class="divider">
+                    <span></span>
+                    <p>or sign up with email</p>
+                    <span></span>
+                </div>
+
+                <form id="registerForm">
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name"
+                            autocomplete="name" minlength="2" maxlength="80" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+
+                        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" placeholder="Create a strong password"
+                                autocomplete="new-password" minlength="8" required>
+
+                            <button type="button" class="toggle-password" id="togglePassword"
+                                aria-label="Show password">
+                                Show
+                            </button>
+                        </div>
+
+                        <p class="field-hint">
+                            Use at least 8 characters.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            placeholder="Enter your password again" autocomplete="new-password" minlength="8" required>
+                    </div>
+
+                    <label class="terms-option">
+                        <input type="checkbox" id="acceptTerms" required>
+
+                        <span>
+                            I agree to the
+                            <a href="#" id="termsLink">Terms of Service</a>
+                            and
+                            <a href="#" id="privacyLink">Privacy Policy</a>.
+                        </span>
+                    </label>
+
+                    <p id="registerMessage" class="form-message" role="status" aria-live="polite"></p>
+
+                    <button type="submit" class="register-button">
+                        Create Account <span aria-hidden="true">→</span>
+                    </button>
+
+                </form>
+
+                <p class="login-link">
+                    Already have an account?
+                    <a href="index.html">Sign in</a>
+                </p>
+
+                <p class="security-note">
+                    Your financial data deserves to stay private.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

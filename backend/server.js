@@ -1,0 +1,63 @@
+
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+
+import connectDB from "./config/db.js";
+import transactionRoutes from "./routes/transactionRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+
+const app = express();
+
+// Allow only approved frontend origins.
+const allowedOrigins = [
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+    process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error("Origin not allowed by CORS"));
+    }
+}));
+
+// Add security-related HTTP headers.
+app.use(helmet());
+
+// Limit incoming JSON request size.
+app.use(express.json({ limit: "10kb" }));
+
+// API routes.
+app.use("/api/auth", authRoutes);
+app.use("/api/transactions", transactionRoutes);
+
+// API health check.
+app.get("/", (req, res) => {
+    res.json({
+        message: "Expense Tracker API is running"
+    });
+});
+
+// Start only after MongoDB connects.
+const startServer = async () => {
+    await connectDB();
+
+    const PORT = process.env.PORT || 5000;
+
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+};
+
+startServer().catch((error) => {
+    console.error("Server startup failed:", error.message);
+    process.exit(1);
+});

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Expense Tracker</title>
+
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="auth.css">
+    <script src="login.js" defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <!-- Left branding section -->
+        <section class="login-brand">
+            <div class="brand-logo">ET</div>
+
+            <h1>Expense Tracker</h1>
+
+            <p class="brand-description">
+                Take control of your money.
+                Track your income, manage expenses,
+                and build better financial habits.
+            </p>
+
+            <div class="brand-features">
+                <p>✓ Track income and expenses</p>
+                <p>✓ Understand your spending</p>
+                <p>✓ Manage your finances easily</p>
+            </div>
+        </section>
+
+        <!-- Login form section -->
+        <section class="login-form-section">
+
+            <div class="login-form-wrapper">
+
+                <h2>Welcome Back</h2>
+
+                <p class="form-subtitle">
+                    Sign in to access your account
+                </p>
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+
+                        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="username"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" placeholder="Enter your password"
+                                autocomplete="current-password" required>
+
+                            <button type="button" id="togglePassword" class="toggle-password"
+                                aria-label="Show password">
+                                Show
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-option">
+                            <input type="checkbox" id="rememberMe">
+                            Remember me
+                        </label>
+
+                        <a href="forgot-password.html">Forgot Password?</a>
+                    </div>
+
+                    <p id="loginMessage" class="form-message" role="status" aria-live="polite"></p>
+
+                    <button type="submit" class="login-button">
+                        Sign In
+                    </button>
+
+                </form>
+
+                <div class="google-login-section">
+                    <div class="google-divider">
+                        <span>OR CONTINUE WITH</span>
+                    </div>
+
+                    <div id="googleLoginButton"></div>
+
+                    <div id="googleAuthMessage" class="auth-message" role="alert" aria-live="polite" hidden>
+                        <span class="auth-message-icon" aria-hidden="true">!</span>
+                        <div class="auth-message-content">
+                            <strong id="googleAuthMessageTitle">Unable to sign in</strong>
+                            <p id="googleAuthMessageText"></p>
+                            <a id="googleAuthMessageLink" href="register.html" hidden>
+                                Create an account
+                            </a>
+                        </div>
+                        <button type="button" id="googleAuthMessageClose" aria-label="Dismiss notification">
+                            &times;
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <p class="register-link">
+                    Don't have an account?
+                    <a href="register.html">Create Account</a>
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

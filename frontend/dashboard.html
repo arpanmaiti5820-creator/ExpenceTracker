@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Expense Tracker</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="dashboard.js" defer></script>
+</head>
+
+<body>
+    <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+
+            <a href="dashboard.html" class="sidebar-brand">
+                <span class="brand-icon">ET</span>
+                <span>Expense<span class="brand-accent">Track</span></span>
+            </a>
+
+            <div class="sidebar-label">WORKSPACE</div>
+
+            <nav class="sidebar-nav" aria-label="Main navigation">
+                <a href="#overview" class="nav-link active">
+                    <span class="nav-icon">▦</span>
+                    <span>Overview</span>
+                </a>
+
+                <a href="#transactions" class="nav-link">
+                    <span class="nav-icon">⇄</span>
+                    <span>Transactions</span>
+                </a>
+                <a href="#analytics" class="nav-link">
+                    <span class="nav-icon">▥</span>
+                    <span>Analytics</span>
+                </a>
+
+                <a href="#add-transaction" class="nav-link">
+                    <span class="nav-icon">＋</span>
+                    <span>Add Transaction</span>
+                </a>
+
+                <a href="#" class="nav-link" id="trashNavLink">
+                    <span class="nav-icon">▤</span>
+                    <span>Trash</span>
+                    <span id="trashCount" class="trash-count">0</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-tip">
+                    <span class="tip-icon">✦</span>
+                    <h3>Smart money tip</h3>
+                    <p>Small spending habits can make a big difference over time.</p>
+                </div>
+
+                <button type="button" class="logout-button" id="logoutButton">
+                    <span>↪</span> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="overview">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button type="button" class="menu-toggle" id="menuToggle" aria-label="Toggle navigation"
+                        aria-expanded="false">☰</button>
+
+                    <div>
+                        <p class="breadcrumb">Workspace / Overview</p>
+                        <h1>Financial Overview</h1>
+                    </div>
+                </div>
+
+                <div class="profile-area">
+                    <div class="today-date" id="todayDate"></div>
+
+                    <div class="profile-avatar" id="profileAvatar">D</div>
+
+                    <div class="profile-details">
+                        <strong id="profileName">Demo User</strong>
+                        <span id="profileEmail">demo@example.com</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Welcome Banner -->
+            <section class="welcome-banner">
+                <div class="welcome-copy">
+                    <span class="eyebrow">YOUR FINANCIAL SPACE</span>
+                    <h2>Make your money <span>work smarter.</span></h2>
+                    <p>Track your cash flow, understand your spending, and stay in control.</p>
+                </div>
+
+                <div class="welcome-decoration" aria-hidden="true">
+                    <span class="decoration-circle circle-one"></span>
+                    <span class="decoration-circle circle-two"></span>
+                    <span class="decoration-symbol">₹</span>
+                </div>
+            </section>
+
+            <!-- Summary Cards -->
+            <section class="summary-section" aria-label="Financial summary">
+
+                <article class="summary-card balance-card">
+                    <div class="summary-top">
+                        <span>Net Balance</span>
+                        <span class="summary-icon balance-icon">₹</span>
+                    </div>
+
+                    <h2 id="totalBalance">₹0.00</h2>
+                    <p class="summary-description">Income minus expenses</p>
+
+                    <div class="summary-bottom">
+                        <span class="mini-indicator">●</span>
+                        <span>Your current balance</span>
+                    </div>
+                </article>
+
+                <article class="summary-card income-card">
+                    <div class="summary-top">
+                        <span>Total Income</span>
+                        <span class="summary-icon income-icon">↗</span>
+                    </div>
+
+                    <h2 id="totalIncome">₹0.00</h2>
+                    <p class="summary-description">Money received</p>
+
+                    <div class="summary-bottom">
+                        <span class="mini-indicator">●</span>
+                        <span>All recorded income</span>
+                    </div>
+                </article>
+
+                <article class="summary-card expense-card">
+                    <div class="summary-top">
+                        <span>Total Expenses</span>
+                        <span class="summary-icon expense-icon">↘</span>
+                    </div>
+
+                    <h2 id="totalExpenses">₹0.00</h2>
+                    <p class="summary-description">Money spent</p>
+
+                    <div class="summary-bottom">
+                        <span class="mini-indicator">●</span>
+                        <span>All recorded expenses</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+
+                <!-- Transaction Form -->
+                <section class="panel transaction-panel" id="add-transaction">
+
+                    <div class="panel-heading">
+                        <div>
+                            <span class="section-kicker">RECORD KEEPING</span>
+                            <h2>Add Transaction</h2>
+                        </div>
+
+                        <span class="panel-heading-icon">＋</span>
+                    </div>
+
+                    <form id="transactionForm">
+
+                        <div class="form-group">
+                            <label for="transactionTitle">Transaction Name</label>
+
+                            <input type="text" id="transactionTitle" name="title" placeholder="e.g. Monthly salary"
+                                maxlength="100" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Transaction Type</label>
+
+                            <div class="type-selector">
+                                <label class="type-option income-option">
+                                    <input type="radio" name="type" value="income" checked>
+                                    <span>↗ Income</span>
+                                </label>
+
+                                <label class="type-option expense-option">
+                                    <input type="radio" name="type" value="expense">
+                                    <span>↘ Expense</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transactionAmount">Amount (₹)</label>
+
+                            <div class="amount-input">
+                                <span>₹</span>
+
+                                <input type="number" id="transactionAmount" name="amount" placeholder="0.00" min="0.01"
+                                    max="1000000000" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transactionCategory">Category</label>
+
+                            <select id="transactionCategory" name="category" required>
+                                <option value="">Select a category</option>
+                                <option value="Salary">Salary</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Food">Food</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Bills">Bills</option>
+                                <option value="Education">Education</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transactionDate">Transaction Date</label>
+
+                            <input type="date" id="transactionDate" name="date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transactionDescription">
+                                Description <span>(optional)</span>
+                            </label>
+
+                            <textarea id="transactionDescription" name="description" rows="3" maxlength="500"
+                                placeholder="Add a note..."></textarea>
+                        </div>
+
+                        <p id="transactionMessage" class="form-message" role="status" aria-live="polite"></p>
+
+                        <button type="submit" class="primary-button">
+                            <span>＋</span> Save Transaction
+                        </button>
+
+                    </form>
+                </section>
+
+                <!-- Transaction History -->
+                <section class="panel history-panel" id="transactions">
+
+                    <div class="panel-heading history-heading">
+                        <div>
+                            <span class="section-kicker">YOUR ACTIVITY</span>
+                            <h2>Recent Transactions</h2>
+                        </div>
+
+                        <span class="transaction-count" id="transactionCount">
+                            0 records
+                        </span>
+                    </div>
+
+                    <div class="history-controls">
+                        <div class="search-box">
+                            <span aria-hidden="true">⌕</span>
+
+                            <input type="search" id="searchTransactions" placeholder="Search transactions..."
+                                aria-label="Search transactions">
+                        </div>
+
+                        <select id="filterType" aria-label="Filter by transaction type">
+                            <option value="all">All types</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expenses</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>TRANSACTION</th>
+                                    <th>DATE</th>
+                                    <th>AMOUNT</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="transactionList">
+                                <tr>
+                                    <td colspan="4" class="empty-state">
+                                        No transactions yet. Add your first transaction.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="history-footer">
+                        <span id="historySummary">Your transaction history</span>
+                        <button type="button" id="clearFilters">Clear filters</button>
+                    </div>
+
+                </section>
+
+            </div>
+
+            <!-- Expense Analytics -->
+            <section class="analytics-section" id="analytics">
+                <div class="analytics-heading">
+                    <div>
+                        <span class="section-kicker">FINANCIAL INSIGHTS</span>
+                        <h2>Expense Analytics</h2>
+                        <p>Understand your income and spending patterns.</p>
+                    </div>
+
+                    <div class="analytics-filter">
+                        <label for="analyticsPeriod">Period</label>
+                        <select id="analyticsPeriod">
+                            <option value="all">All time</option>
+                            <option value="6">Last 6 months</option>
+                            <option value="12" selected>Last 12 months</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="analytics-summary">
+                    <article class="analytics-card">
+                        <span>Total Income</span>
+                        <h3 id="analyticsIncome">₹0.00</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <span>Total Expenses</span>
+                        <h3 id="analyticsExpenses">₹0.00</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <span>Savings Rate</span>
+                        <h3 id="analyticsSavingsRate">0%</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <span>Top Spending Category</span>
+                        <h3 id="analyticsTopCategory">—</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <span>Average Monthly Expenses</span>
+                        <h3 id="analyticsAverageExpenses">₹0.00</h3>
+                    </article>
+
+                </div>
+
+                <div class="analytics-grid">
+                    <article class="panel analytics-panel">
+                        <h3>Monthly Income vs. Expenses</h3>
+                        <div class="analytics-chart-container">
+                            <canvas id="monthlyAnalyticsChart" role="img"
+                                aria-label="Monthly income compared with expenses">
+                                Monthly income and expense chart
+                            </canvas>
+                        </div>
+                    </article>
+
+                    <article class="panel analytics-panel">
+                        <h3>Spending by Category</h3>
+                        <div class="analytics-chart-container">
+                            <canvas id="categoryAnalyticsChart" role="img"
+                                aria-label="Expense distribution by category">
+                                Expense category chart
+                            </canvas>
+                        </div>
+                        <p id="categoryAnalyticsEmpty" hidden>
+                            No expense data available for this period.
+                        </p>
+                    </article>
+
+                    <article class="panel analytics-panel">
+                        <h3>Monthly Net Savings</h3>
+                        <div class="analytics-chart-container">
+                            <canvas id="savingsAnalyticsChart" role="img" aria-label="Monthly net savings trend">
+                                Monthly net savings chart
+                            </canvas>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+            <!-- Trash -->
+            <section class="panel history-panel" id="trashSection" hidden>
+
+
+
+                <div class="panel-heading history-heading">
+                    <div>
+                        <span class="section-kicker">RECOVERY</span>
+                        <h2>Trash</h2>
+                    </div>
+                    <button type="button" id="emptyTrashBtn" class="empty-trash-btn">
+                        Empty Trash
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TRANSACTION</th>
+                                <th>DATE</th>
+                                <th>AMOUNT</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trashList"></tbody>
+                    </table>
+                </div>
+            </section>
+            <footer class="dashboard-footer">
+                <span>Expense Tracker</span>
+                <span>Make every rupee count.</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+    <!-- Professional Delete Confirmation Modal -->
+    <div class="confirm-modal-overlay" id="confirmModal" hidden>
+        <div class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+
+            <div class="confirm-modal-icon">⌫</div>
+
+            <h2 id="confirmModalTitle">Move to Trash?</h2>
+
+            <p id="confirmModalMessage">
+                This transaction will be moved to Trash, where you can restore it later.
+            </p>
+
+            <div class="confirm-modal-actions">
+                <button type="button" id="cancelDeleteBtn" class="modal-cancel-btn">
+                    Cancel
+                </button>
+
+                <button type="button" id="confirmDeleteBtn" class="modal-confirm-btn">
+                    Move to Trash
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="logout-modal-overlay" id="logoutModal" aria-hidden="true">
+        <div class="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle"
+            aria-describedby="logoutModalDescription">
+            <div class="logout-modal-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path>
+                </svg>
+            </div>
+
+            <h2 id="logoutModalTitle">Log out?</h2>
+
+            <p id="logoutModalDescription">
+                Are you sure you want to log out from your account?
+            </p>
+
+            <div class="logout-modal-actions">
+                <button type="button" id="cancelLogout" class="logout-cancel-btn">
+                    Cancel
+                </button>
+
+                <button type="button" id="confirmLogout" class="logout-confirm-btn">
+                    Log Out
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="logout-modal-overlay" id="logoutModal" aria-hidden="true">
+        <div class="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle"
+            aria-describedby="logoutModalDescription">
+            <div class="logout-modal-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path>
+                </svg>
+            </div>
+
+            <h2 id="logoutModalTitle">Log out?</h2>
+
+            <p id="logoutModalDescription">
+                Are you sure you want to log out from your account?
+            </p>
+
+            <div class="logout-modal-actions">
+                <button type="button" id="cancelLogout" class="logout-cancel-btn">
+                    Cancel
+                </button>
+
+                <button type="button" id="confirmLogout" class="logout-confirm-btn">
+                    Log Out
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
