@@ -1,4 +1,3 @@
-
 const API_BASE_URL = "https://expencetracker-8lb7.onrender.com/api/auth";
 const registerForm = document.getElementById("registerForm");
 
@@ -167,7 +166,7 @@ function initializeGoogleRegister() {
 
 async function handleGoogleRegister(response) {
     try {
-        const result = await fetch("http://localhost:5000/api/auth/google", {
+        const result = await fetch("https://expencetracker-8lb7.onrender.com/api/auth/google", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
