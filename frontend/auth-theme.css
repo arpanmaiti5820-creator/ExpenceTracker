@@ -1,0 +1,130 @@
+/* Auth pages theme (login, register, forgot, reset). Load LAST. */
+:root {
+    --primary: #0e8a8a !important;
+    --primary-dark: #0a6c70;
+    --primary-hover: #0a6c70;
+    --text: #12263a;
+    --muted: #6b7f93
+}
+
+body {
+    font-family: 'Manrope', 'DM Sans', sans-serif
+}
+
+h1,
+h2,
+.brand-logo {
+    font-family: 'Sora', 'Plus Jakarta Sans', sans-serif !important
+}
+
+body {
+    background: radial-gradient(ellipse at 5% 10%, #d4eeec 0, transparent 40%), radial-gradient(ellipse at 95% 90%, #dbe8f3 0, transparent 42%), #f2f5f8
+}
+
+body:has(.register-container) {
+    background: radial-gradient(ellipse at 10% 15%, #0f4a55 0, transparent 38%), radial-gradient(ellipse at 90% 85%, #0b6a6a 0, transparent 36%), linear-gradient(135deg, #07121f, #0b2133 55%, #08151f);
+    background-attachment: fixed
+}
+
+.login-brand,
+.register-brand {
+    background: radial-gradient(ellipse at 85% 85%, rgb(20 184 166/32%), transparent 38%), linear-gradient(150deg, #0a1726, #0d2a3d 65%, #0f3a4a)
+}
+
+.login-brand::before,
+.login-brand::after,
+.register-brand::before,
+.register-brand::after {
+    border-color: rgb(94 234 212/22%)
+}
+
+.brand-logo,
+.feature-icon {
+    background: linear-gradient(135deg, #2dd4bf, #0e8a8a);
+    box-shadow: 0 10px 30px rgb(20 184 166/35%)
+}
+
+.brand-features p::first-letter,
+.brand-tagline {
+    color: #5eead4
+}
+
+.register-brand h1 span {
+    color: #f2c46b;
+    text-shadow: none
+}
+
+.login-button,
+.register-button,
+.auth-container button {
+    background: linear-gradient(105deg, #0e9a95, #0a6c70);
+    box-shadow: 0 7px 18px rgb(14 138 138/25%)
+}
+
+.login-button:hover,
+.register-button:hover {
+    box-shadow: 0 12px 25px rgb(14 138 138/32%)
+}
+
+.form-group input:focus,
+.auth-container input:focus {
+    border-color: #0e8a8a;
+    box-shadow: 0 0 0 4px rgb(14 138 138/13%)
+}
+
+.form-group input:hover {
+    border-color: #a9dcd8
+}
+
+.toggle-password,
+.form-options a,
+.register-link a,
+.login-link a,
+.terms-option a,
+.auth-container a {
+    color: #0e8a8a
+}
+
+.welcome-badge {
+    background: #e3f4f3;
+    border-color: #c3e4e1;
+    color: #0a6c70
+}
+
+.badge-dot {
+    background: #0e8a8a;
+    box-shadow: 0 0 10px rgb(14 138 138/55%)
+}
+
+.google-login-button:hover,
+.google-register-button:hover,
+#googleLoginButton:hover,
+#googleRegisterButton:hover {
+    border-color: #5eead4;
+    box-shadow: 0 8px 22px rgb(14 138 138/16%)
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline-color: rgb(14 138 138/40%)
+}
+
+/* one calm entrance for the card */
+@keyframes authIn {
+    from {
+        opacity: 0;
+        transform: translateY(22px) scale(.985)
+    }
+
+    to {
+        opacity: 1;
+        transform: none
+    }
+}
+
+.login-container,
+.register-container,
+.auth-container {
+    animation: authIn .7s cubic-bezier(.2, .7, .2, 1) both
+}

@@ -1,4 +1,3 @@
-
 import express from "express";
 import rateLimit from "express-rate-limit";
 
@@ -12,9 +11,22 @@ import {
 
 const router = express.Router();
 
-// Limit repeated authentication requests.
-const authLimiter = rateLimit({
+// Sign-in endpoints: only FAILED attempts count, so normal logins never get blocked.
+const signInLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 10,
+    skipSuccessfulRequests: true,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: {
+        success: false,
+        message: "Too many failed attempts. Please wait 15 minutes and try again."
+    }
+});
+
+// Register, forgot and reset: every request counts (stops email and account spam).
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
     limit: 10,
     standardHeaders: "draft-8",
     legacyHeaders: false,
@@ -24,13 +36,10 @@ const authLimiter = rateLimit({
     }
 });
 
-// Apply rate limiting to all authentication endpoints.
-router.use(authLimiter);
-
-router.post("/register", registerUser);
-router.post("/login", loginUser);
-router.post("/google", googleLogin);
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.post("/register", authLimiter, registerUser);
+router.post("/login", signInLimiter, loginUser);
+router.post("/google", signInLimiter, googleLogin);
+router.post("/forgot-password", authLimiter, forgotPassword);
+router.post("/reset-password", authLimiter, resetPassword);
 
 export default router;

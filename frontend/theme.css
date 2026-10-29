@@ -1,0 +1,325 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap');
+
+/* Dashboard theme: ink navy + teal. Loaded AFTER dashboard.css. */
+:root {
+    --primary: #0e8a8a;
+    --primary-dark: #0a6c70;
+    --navy: #0b1b2b;
+    --text: #12263a;
+    --muted: #6b7f93;
+    --border: #e3e9ef;
+    --background: #f2f5f8;
+    --green: #12a36b;
+    --red: #e0566b;
+    --teal-soft: #e3f4f3;
+    --ease: cubic-bezier(.2, .7, .2, 1)
+}
+
+body {
+    font-family: 'Manrope', sans-serif;
+    background: radial-gradient(ellipse at 95% 0%, #d9efee 0, transparent 32%), var(--background)
+}
+
+h1,
+h2,
+h3,
+.sidebar-brand,
+.decoration-symbol {
+    font-family: 'Sora', sans-serif !important
+}
+
+.sidebar {
+    background: radial-gradient(ellipse at 0% 100%, rgb(20 184 166/22%), transparent 42%), linear-gradient(170deg, #0a1726, #0d2236 75%, #0f2c40)
+}
+
+.brand-icon {
+    background: linear-gradient(135deg, #2dd4bf, #0e8a8a);
+    box-shadow: 0 6px 22px rgb(20 184 166/35%)
+}
+
+.brand-accent {
+    color: #5eead4
+}
+
+.sidebar-label {
+    color: #6f879b
+}
+
+.nav-link {
+    color: #a9bccb
+}
+
+.nav-link.active {
+    background: linear-gradient(105deg, #0e8a8a, #0a6c70);
+    box-shadow: 0 7px 20px rgb(14 138 138/30%)
+}
+
+.tip-icon {
+    background: rgb(45 212 191/18%);
+    color: #7ff0de
+}
+
+.sidebar-tip p {
+    color: #9fb3c3
+}
+
+#trashCount {
+    background: rgb(255 255 255/16%)
+}
+
+.welcome-banner {
+    background: radial-gradient(ellipse at 90% 100%, rgb(45 212 191/32%), transparent 40%), linear-gradient(110deg, #0a1726, #0f3446 58%, #0e7c86)
+}
+
+.eyebrow,
+.section-kicker {
+    color: #5eead4
+}
+
+.panel-heading .section-kicker {
+    color: var(--primary)
+}
+
+.welcome-copy h2 span {
+    color: #f2c46b
+}
+
+.welcome-copy p {
+    color: #c4d6e0
+}
+
+.decoration-symbol {
+    text-shadow: 0 0 25px rgb(94 234 212/70%)
+}
+
+.profile-avatar {
+    background: linear-gradient(135deg, #5eead4, #0e8a8a)
+}
+
+.summary-card:hover {
+    border-color: #a9dcd8;
+    box-shadow: 0 14px 30px rgb(14 100 110/10%)
+}
+
+.balance-icon,
+.panel-heading-icon,
+.transaction-count,
+.transaction-icon {
+    background: var(--teal-soft);
+    color: var(--primary)
+}
+
+.income-icon {
+    background: #e2f6ec
+}
+
+.expense-icon {
+    background: #fdecef
+}
+
+.amount-input>span {
+    color: var(--primary)
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    box-shadow: 0 0 0 3px rgb(14 138 138/14%)
+}
+
+.search-box:focus-within {
+    box-shadow: 0 0 0 3px rgb(14 138 138/12%)
+}
+
+.primary-button,
+.modal-confirm-btn,
+.logout-confirm-btn {
+    background: linear-gradient(105deg, #0e9a95, #0a6c70);
+    box-shadow: 0 7px 17px rgb(14 138 138/25%)
+}
+
+.logout-confirm-btn:hover {
+    background: linear-gradient(105deg, #0b8a86, #085a5e)
+}
+
+.logout-cancel-btn {
+    color: var(--primary);
+    border-color: #b5dcd9
+}
+
+.logout-cancel-btn:hover {
+    background: var(--teal-soft)
+}
+
+.income-option input:checked+span {
+    border-color: #7fd3b0;
+    background: #e6f7ef;
+    color: #0d8a5d
+}
+
+.edit-button {
+    color: var(--primary);
+    background: var(--teal-soft);
+    border-color: #c3e4e1
+}
+
+.edit-button:hover {
+    background: var(--primary);
+    border-color: var(--primary)
+}
+
+#trashList button {
+    background: var(--teal-soft);
+    color: var(--primary)
+}
+
+#trashList button:hover {
+    background: #cdebe8
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline-color: rgb(14 138 138/40%)
+}
+
+.logout-modal-overlay,
+.confirm-modal-overlay {
+    background: rgba(8, 20, 34, .62)
+}
+
+.confirm-modal-overlay,
+.confirm-modal,
+.logout-modal {
+    transition-timing-function: var(--ease)
+}
+
+.summary-card h2,
+.analytics-card h3 {
+    font-variant-numeric: tabular-nums
+}
+
+/* ---------- Motion ---------- */
+.sidebar .nav-link {
+    overflow: hidden
+}
+
+.nav-link.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 25%;
+    bottom: 25%;
+    width: 3px;
+    border-radius: 3px;
+    background: #f2c46b;
+    animation: pip .35s var(--ease)
+}
+
+@keyframes pip {
+    from {
+        transform: scaleY(0)
+    }
+
+    to {
+        transform: scaleY(1)
+    }
+}
+
+.view-enter {
+    animation: viewIn .55s var(--ease) both;
+    animation-delay: calc(var(--i, 0)*80ms)
+}
+
+@keyframes viewIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(.985);
+        filter: blur(3px)
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+        filter: none
+    }
+}
+
+.topbar h1,
+.breadcrumb {
+    transition: opacity .22s, transform .22s
+}
+
+.topbar.swap h1,
+.topbar.swap .breadcrumb {
+    opacity: 0;
+    transform: translateY(-6px)
+}
+
+tbody tr {
+    animation: rowIn .3s var(--ease) both
+}
+
+@keyframes rowIn {
+    from {
+        opacity: 0;
+        transform: translateX(-8px)
+    }
+
+    to {
+        opacity: 1;
+        transform: none
+    }
+}
+
+.primary-button:active,
+.delete-button:active,
+.edit-button:active {
+    transform: scale(.97)
+}
+
+.analytics-card {
+    transition: transform .25s, box-shadow .25s
+}
+
+.analytics-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px rgb(14 100 110/9%)
+}
+
+.welcome-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(115deg, transparent 35%, rgb(255 255 255/7%) 50%, transparent 65%);
+    transform: translateX(-100%);
+    animation: sheen 1.6s .5s var(--ease) 1 forwards
+}
+
+@keyframes sheen {
+    to {
+        transform: translateX(100%)
+    }
+}
+
+.menu-toggle:active {
+    transform: scale(.94)
+}
+
+@media(max-width:760px) {
+    .sidebar {
+        transition: transform .35s var(--ease)
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+    .view-enter,
+    tbody tr,
+    .welcome-banner::after {
+        animation: none !important
+    }
+}

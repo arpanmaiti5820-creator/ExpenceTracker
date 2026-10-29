@@ -1,4 +1,3 @@
-
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -11,6 +10,10 @@ import transactionRoutes from "./routes/transactionRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
+
+// Render sits behind a proxy. Without this, every visitor shares one IP
+// and one rate-limit counter.
+app.set("trust proxy", 1);
 
 // Allow only approved frontend origins.
 const allowedOrigins = [

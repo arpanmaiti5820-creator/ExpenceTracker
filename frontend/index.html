@@ -5,92 +5,907 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Expense Tracker</title>
-
-    <link rel="stylesheet" href="login.css">
-    <link rel="stylesheet" href="auth.css">
+    <meta name="description" content="Sign in to track income and expenses and see where your money goes.">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap">
     <script src="login.js" defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        :root {
+            --ink: #0a1726;
+            --ink2: #0f2c40;
+            --teal: #0e8a8a;
+            --teal2: #0a6c70;
+            --mint: #5eead4;
+            --amber: #f2c46b;
+            --rose: #f4a0ae;
+            --paper: #f2f5f8;
+            --text: #12263a;
+            --muted: #5d7388;
+            --line: #dfe7ee;
+            --ease: cubic-bezier(.2, .7, .2, 1)
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            color: var(--text);
+            background: var(--paper);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Sora', sans-serif;
+            letter-spacing: -.03em;
+            line-height: 1.1
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button,
+        input {
+            font: inherit
+        }
+
+        :focus-visible {
+            outline: 3px solid rgb(14 138 138/45%);
+            outline-offset: 3px;
+            border-radius: 6px
+        }
+
+        .wrap {
+            width: min(1120px, 100% - 40px);
+            margin-inline: auto
+        }
+
+        /* nav */
+        .nav {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 50;
+            transition: background .3s, box-shadow .3s
+        }
+
+        .nav.solid {
+            background: rgb(10 23 38/88%);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 rgb(255 255 255/8%)
+        }
+
+        .nav .wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px
+        }
+
+        .logo {
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: #fff;
+            font: 800 17px 'Sora', sans-serif;
+            letter-spacing: -.03em
+        }
+
+        .logo i {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2dd4bf, #0e8a8a);
+            font: 800 15px 'Sora', sans-serif;
+            font-style: normal
+        }
+
+        .links {
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .links a {
+            padding: 9px 14px;
+            border-radius: 10px;
+            color: #b9cad7;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color .2s, background .2s
+        }
+
+        .links a:hover {
+            color: #fff;
+            background: rgb(255 255 255/8%)
+        }
+
+        .links .cta {
+            white-space: nowrap;
+            margin-left: 8px;
+            color: var(--ink);
+            background: var(--mint)
+        }
+
+        .links .cta:hover {
+            background: #8ff3e3;
+            color: var(--ink)
+        }
+
+        /* hero */
+        .hero {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            padding: 120px 0 150px;
+            background: radial-gradient(ellipse at 85% 25%, rgb(45 212 191/16%), transparent 45%), linear-gradient(160deg, #08131f, var(--ink) 45%, var(--ink2))
+        }
+
+        #flow {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%
+        }
+
+        .hero .wrap {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 60px;
+            align-items: center
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 5.4vw, 66px);
+            font-weight: 800;
+            margin-bottom: 22px
+        }
+
+        .ln {
+            display: block;
+            overflow: hidden;
+            padding-bottom: .1em;
+            margin-bottom: -.1em
+        }
+
+        .ln>span {
+            display: block;
+            transform: translateY(110%);
+            animation: rise .9s var(--ease) forwards
+        }
+
+        .ln:nth-child(2)>span {
+            animation-delay: .12s
+        }
+
+        .ln:nth-child(3)>span {
+            animation-delay: .24s
+        }
+
+        @keyframes rise {
+            to {
+                transform: none
+            }
+        }
+
+        .lead {
+            max-width: 470px;
+            color: #b9cad7;
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fade .8s .5s var(--ease) forwards
+        }
+
+        .pts {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+            opacity: 0;
+            animation: fade .8s .65s var(--ease) forwards
+        }
+
+        .pts li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d3e0ea;
+            font-size: 15px;
+            font-weight: 600
+        }
+
+        .pts li::before {
+            content: "";
+            width: 22px;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--mint)
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* login card */
+        .card {
+            width: 100%;
+            max-width: 410px;
+            justify-self: end;
+            padding: 34px 30px 28px;
+            border-radius: 22px;
+            color: var(--text);
+            background: #fff;
+            box-shadow: 0 40px 90px rgb(0 0 0/38%), 0 0 0 1px rgb(255 255 255/50%) inset;
+            opacity: 0;
+            transform: translateY(30px) scale(.97);
+            animation: cardIn .9s .35s var(--ease) forwards
+        }
+
+        @keyframes cardIn {
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .card h2 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px
+        }
+
+        .sub {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 24px
+        }
+
+        .fg {
+            margin-bottom: 16px
+        }
+
+        .fg label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #2a3f54
+        }
+
+        .fg input[type=email],
+        .fg input[type=password],
+        .fg input[type=text] {
+            width: 100%;
+            height: 50px;
+            padding: 0 15px;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            background: #fafcfd;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s, background .2s
+        }
+
+        .fg input:hover {
+            border-color: #b7dcd9
+        }
+
+        .fg input:focus {
+            border-color: var(--teal);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgb(14 138 138/13%)
+        }
+
+        .pw {
+            position: relative
+        }
+
+        .pw input {
+            padding-right: 64px !important
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 8px 10px;
+            border: 0;
+            border-radius: 8px;
+            background: none;
+            color: var(--teal);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .toggle-password:hover {
+            background: #e3f4f3
+        }
+
+        .opts {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 2px 0 18px;
+            font-size: 13px
+        }
+
+        .opts label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            cursor: pointer
+        }
+
+        .opts input {
+            width: 15px;
+            height: 15px;
+            accent-color: var(--teal)
+        }
+
+        .opts a,
+        .reg a {
+            color: var(--teal);
+            font-weight: 700
+        }
+
+        .opts a:hover,
+        .reg a:hover {
+            text-decoration: underline
+        }
+
+        .form-message {
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.5
+        }
+
+        .form-message:empty {
+            display: none
+        }
+
+        .login-button {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            min-height: 52px;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(105deg, #0e9a95, var(--teal2));
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgb(14 138 138/28%);
+            transition: transform .2s, box-shadow .2s
+        }
+
+        .login-button::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, transparent 30%, rgb(255 255 255/28%) 50%, transparent 70%);
+            transform: translateX(-120%);
+            transition: transform .6s var(--ease)
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgb(14 138 138/36%)
+        }
+
+        .login-button:hover::after {
+            transform: translateX(120%)
+        }
+
+        .login-button:active {
+            transform: scale(.98)
+        }
+
+        .login-button:disabled {
+            opacity: .7;
+            cursor: progress
+        }
+
+        .div {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0 16px;
+            color: #8497a8;
+            font-size: 12px;
+            font-weight: 600
+        }
+
+        .div::before,
+        .div::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--line)
+        }
+
+        #googleLoginButton {
+            display: flex;
+            justify-content: center;
+            min-height: 40px
+        }
+
+        .auth-message {
+            display: flex;
+            gap: 11px;
+            align-items: flex-start;
+            margin-top: 14px;
+            padding: 13px;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            background: #fff5f5;
+            color: #7f1d1d
+        }
+
+        .auth-message[hidden] {
+            display: none
+        }
+
+        .auth-message-icon {
+            display: grid;
+            place-items: center;
+            flex: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-weight: 800;
+            font-size: 13px
+        }
+
+        .auth-message-content {
+            flex: 1;
+            min-width: 0
+        }
+
+        .auth-message-content strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 3px
+        }
+
+        .auth-message-content p {
+            font-size: 12.5px;
+            line-height: 1.5;
+            overflow-wrap: anywhere
+        }
+
+        .auth-message-content a {
+            display: inline-block;
+            margin-top: 6px;
+            color: var(--teal);
+            font-weight: 700;
+            font-size: 13px
+        }
+
+        #googleAuthMessageClose {
+            border: 0;
+            background: none;
+            color: #7f1d1d;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer
+        }
+
+        .reg {
+            margin-top: 20px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13.5px
+        }
+
+        /* ticker */
+        .ticker {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 16px 0;
+            border-top: 1px solid rgb(255 255 255/9%);
+            background: rgb(8 19 31/55%);
+            backdrop-filter: blur(8px);
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)
+        }
+
+        .track {
+            display: flex;
+            gap: 14px;
+            width: max-content;
+            animation: slide 38s linear infinite
+        }
+
+        .ticker:hover .track {
+            animation-play-state: paused
+        }
+
+        @keyframes slide {
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        .chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            border: 1px solid rgb(255 255 255/10%);
+            border-radius: 999px;
+            background: rgb(255 255 255/5%);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #d3e0ea;
+            white-space: nowrap
+        }
+
+        .chip b {
+            font-variant-numeric: tabular-nums
+        }
+
+        .chip .in {
+            color: var(--mint)
+        }
+
+        .chip .out {
+            color: var(--rose)
+        }
+
+        .cap {
+            position: absolute;
+            right: 20px;
+            top: -1px;
+            transform: translateY(-100%);
+            color: #6f879b;
+            font-size: 11px;
+            padding-bottom: 6px
+        }
+
+        /* sections */
+        section.s {
+            padding: 100px 0
+        }
+
+        .head {
+            max-width: 600px;
+            margin-bottom: 50px
+        }
+
+        .head h2 {
+            font-size: clamp(28px, 3.8vw, 42px);
+            font-weight: 800;
+            margin-bottom: 14px
+        }
+
+        .head p {
+            color: var(--muted);
+            font-size: 17px
+        }
+
+        .feats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0 56px
+        }
+
+        .feat {
+            position: relative;
+            padding: 30px 0 34px 62px
+        }
+
+        .feat::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--line)
+        }
+
+        .feat::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0;
+            background: var(--teal);
+            transition: width 1s .2s var(--ease)
+        }
+
+        .feat.in::after {
+            width: 100%
+        }
+
+        .feat .ic {
+            position: absolute;
+            left: 0;
+            top: 30px;
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            background: #e3f4f3;
+            color: var(--teal);
+            font-size: 20px;
+            font-weight: 800;
+            transition: transform .35s var(--ease), background .3s, color .3s
+        }
+
+        .feat:hover .ic {
+            transform: rotate(-8deg) scale(1.08);
+            background: var(--teal);
+            color: #fff
+        }
+
+        .feat h3 {
+            font-size: 19px;
+            margin-bottom: 8px
+        }
+
+        .feat p {
+            color: var(--muted);
+            font-size: 15px
+        }
+
+        .band {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            flex-wrap: wrap;
+            padding: 52px;
+            border-radius: 26px;
+            color: #fff;
+            background: radial-gradient(ellipse at 90% 0%, rgb(45 212 191/28%), transparent 50%), linear-gradient(135deg, var(--ink), #0e4a55)
+        }
+
+        .band h2 {
+            font-size: clamp(26px, 3.4vw, 38px);
+            max-width: 520px
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
+            padding: 0 26px;
+            border-radius: 13px;
+            background: var(--mint);
+            color: var(--ink);
+            font-weight: 700;
+            transition: transform .2s, box-shadow .2s
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgb(45 212 191/35%)
+        }
+
+        footer {
+            padding: 32px 0;
+            margin-top: 90px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        footer .wrap {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap
+        }
+
+        footer a:hover {
+            color: var(--teal)
+        }
+
+        .rv {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .7s var(--ease), transform .7s var(--ease)
+        }
+
+        .rv.in {
+            opacity: 1;
+            transform: none
+        }
+
+        @media(max-width:900px) {
+            .hero {
+                padding: 104px 0 140px;
+                align-items: flex-start
+            }
+
+            .hero .wrap {
+                grid-template-columns: 1fr;
+                gap: 34px
+            }
+
+            .card {
+                justify-self: center
+            }
+
+            .pts {
+                display: none
+            }
+
+            .feats {
+                grid-template-columns: 1fr
+            }
+
+            .band {
+                padding: 34px 24px
+            }
+
+            section.s {
+                padding: 70px 0
+            }
+
+            .links a:not(.cta) {
+                display: none
+            }
+        }
+
+        @media(max-width:400px) {
+            .nav .wrap {
+                height: 64px
+            }
+
+            .logo {
+                font-size: 15px;
+                gap: 9px
+            }
+
+            .logo i {
+                width: 34px;
+                height: 34px;
+                font-size: 13px
+            }
+
+            .links .cta {
+                margin-left: 0;
+                padding: 9px 12px;
+                font-size: 13px
+            }
+
+            .card {
+                padding: 28px 20px 24px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                animation: none !important;
+                transition-duration: .01ms !important
+            }
+
+            .ln>span,
+            .card,
+            .lead,
+            .pts,
+            .rv {
+                opacity: 1;
+                transform: none
+            }
+
+            html {
+                scroll-behavior: auto
+            }
+
+            .feat::after {
+                width: 100%
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <main class="login-container">
+    <header class="nav" id="nav">
+        <div class="wrap">
+            <a href="index.html" class="logo" aria-label="Expense Tracker home"><i>ET</i><span>Expense
+                    Tracker</span></a>
+            <nav class="links" aria-label="Main">
+                <a href="#features">Features</a>
+                <a href="register.html" class="cta">Create account</a>
+            </nav>
+        </div>
+    </header>
 
-        <!-- Left branding section -->
-        <section class="login-brand">
-            <div class="brand-logo">ET</div>
+    <main>
+        <section class="hero">
+            <canvas id="flow" aria-hidden="true"></canvas>
+            <div class="wrap">
+                <div>
+                    <h1><span class="ln"><span>Know where</span></span><span class="ln"><span>every
+                                rupee</span></span><span class="ln"><span>goes.</span></span></h1>
+                    <p class="lead">Record what comes in and what goes out, then watch your month take shape in clear
+                        charts.</p>
+                    <ul class="pts">
+                        <li>Add, edit and search every transaction</li>
+                        <li>Monthly income, expenses and savings at a glance</li>
+                        <li>Deleted something by mistake? Restore it from Trash</li>
+                    </ul>
+                </div>
 
-            <h1>Expense Tracker</h1>
+                <div class="card">
+                    <h2>Welcome back</h2>
+                    <p class="sub">Sign in to access your account</p>
 
-            <p class="brand-description">
-                Take control of your money.
-                Track your income, manage expenses,
-                and build better financial habits.
-            </p>
-
-            <div class="brand-features">
-                <p>✓ Track income and expenses</p>
-                <p>✓ Understand your spending</p>
-                <p>✓ Manage your finances easily</p>
-            </div>
-        </section>
-
-        <!-- Login form section -->
-        <section class="login-form-section">
-
-            <div class="login-form-wrapper">
-
-                <h2>Welcome Back</h2>
-
-                <p class="form-subtitle">
-                    Sign in to access your account
-                </p>
-
-                <form id="loginForm">
-
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-
-                        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="username"
-                            required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password</label>
-
-                        <div class="password-wrapper">
-                            <input type="password" id="password" name="password" placeholder="Enter your password"
-                                autocomplete="current-password" required>
-
-                            <button type="button" id="togglePassword" class="toggle-password"
-                                aria-label="Show password">
-                                Show
-                            </button>
+                    <form id="loginForm">
+                        <div class="fg">
+                            <label for="email">Email address</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com"
+                                autocomplete="username" required>
                         </div>
-                    </div>
 
-                    <div class="form-options">
-                        <label class="remember-option">
-                            <input type="checkbox" id="rememberMe">
-                            Remember me
-                        </label>
+                        <div class="fg">
+                            <label for="password">Password</label>
+                            <div class="pw">
+                                <input type="password" id="password" name="password" placeholder="Enter your password"
+                                    autocomplete="current-password" required>
+                                <button type="button" id="togglePassword" class="toggle-password"
+                                    aria-label="Show password">Show</button>
+                            </div>
+                        </div>
 
-                        <a href="forgot-password.html">Forgot Password?</a>
-                    </div>
+                        <div class="opts">
+                            <label><input type="checkbox" id="rememberMe"> Remember me</label>
+                            <a href="forgot-password.html">Forgot password?</a>
+                        </div>
 
-                    <p id="loginMessage" class="form-message" role="status" aria-live="polite"></p>
+                        <p id="loginMessage" class="form-message" role="status" aria-live="polite"></p>
 
-                    <button type="submit" class="login-button">
-                        Sign In
-                    </button>
+                        <button type="submit" class="login-button">Sign in</button>
+                    </form>
 
-                </form>
-
-                <div class="google-login-section">
-                    <div class="google-divider">
-                        <span>OR CONTINUE WITH</span>
-                    </div>
-
+                    <div class="div">or continue with</div>
                     <div id="googleLoginButton"></div>
 
                     <div id="googleAuthMessage" class="auth-message" role="alert" aria-live="polite" hidden>
@@ -98,29 +913,122 @@
                         <div class="auth-message-content">
                             <strong id="googleAuthMessageTitle">Unable to sign in</strong>
                             <p id="googleAuthMessageText"></p>
-                            <a id="googleAuthMessageLink" href="register.html" hidden>
-                                Create an account
-                            </a>
+                            <a id="googleAuthMessageLink" href="register.html" hidden>Create an account</a>
                         </div>
-                        <button type="button" id="googleAuthMessageClose" aria-label="Dismiss notification">
-                            &times;
-                        </button>
+                        <button type="button" id="googleAuthMessageClose"
+                            aria-label="Dismiss notification">&times;</button>
                     </div>
 
+                    <p class="reg">New here? <a href="register.html">Create an account</a></p>
                 </div>
-
-
-                <p class="register-link">
-                    Don't have an account?
-                    <a href="register.html">Create Account</a>
-                </p>
-
             </div>
 
+            <div class="ticker" aria-hidden="true">
+                <span class="cap">Sample activity</span>
+                <div class="track" id="track"></div>
+            </div>
         </section>
 
+        <section class="s" id="features">
+            <div class="wrap">
+                <div class="head rv">
+                    <h2>Built for the things you do every week</h2>
+                    <p>Add a transaction, find an old one, check how the month is going.</p>
+                </div>
+                <div class="feats">
+                    <article class="feat rv"><span class="ic">＋</span>
+                        <h3>Record in seconds</h3>
+                        <p>Add income or an expense with a category, date and optional note. Edit it later if something
+                            changes.</p>
+                    </article>
+                    <article class="feat rv"><span class="ic">⌕</span>
+                        <h3>Find anything instantly</h3>
+                        <p>Search by name, category or note, and filter by income or expense.</p>
+                    </article>
+                    <article class="feat rv"><span class="ic">▥</span>
+                        <h3>See the trend</h3>
+                        <p>Income against expenses by month, a category breakdown, your savings rate and average monthly
+                            spend.</p>
+                    </article>
+                    <article class="feat rv"><span class="ic">↺</span>
+                        <h3>Restore what you delete</h3>
+                        <p>Removed transactions wait in Trash until you restore them or empty it for good.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="wrap rv">
+            <div class="band">
+                <h2>Start tracking today and see your first month clearly.</h2>
+                <a class="btn" href="register.html">Create free account</a>
+            </div>
+        </section>
     </main>
 
+    <footer>
+        <div class="wrap">
+            <span>© <span id="yr"></span> Expense Tracker</span>
+            <span><a href="register.html">Create account</a> · <a href="forgot-password.html">Forgot password</a></span>
+        </div>
+    </footer>
+
+    <script>
+        (() => {
+            const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+            document.getElementById("yr").textContent = new Date().getFullYear();
+
+            const nav = document.getElementById("nav");
+            const sc = () => nav.classList.toggle("solid", scrollY > 30);
+            sc(); addEventListener("scroll", sc, { passive: true });
+
+            const io = new IntersectionObserver(es => es.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+            }), { threshold: .2 });
+            document.querySelectorAll(".rv").forEach((el, i) => { el.style.transitionDelay = (i % 2) * 90 + "ms"; io.observe(el); });
+
+            // ticker of sample activity (duplicated for a seamless loop)
+            const items = [["₹", "Salary", "+₹62,000", "in"], ["🍽", "Food", "−₹1,840", "out"], ["🧾", "Bills", "−₹2,310", "out"], ["💻", "Freelance", "+₹14,500", "in"],
+            ["✈", "Travel", "−₹6,200", "out"], ["🛍", "Shopping", "−₹3,150", "out"], ["📚", "Education", "−₹1,200", "out"], ["✚", "Healthcare", "−₹850", "out"]];
+            const track = document.getElementById("track");
+            track.innerHTML = [...items, ...items].map(([i, n, a, k]) =>
+                `<span class="chip"><span>${i}</span>${n}<b class="${k}">${a}</b></span>`).join("");
+
+            // cash-flow ribbons: income streams (teal) and spending streams (amber/rose)
+            const cv = document.getElementById("flow"), g = cv.getContext("2d");
+            let W = 0, H = 0, t = 0;
+            const lines = [
+                { y: .30, a: 46, f: .0032, s: .55, c: "94,234,212", w: 2.2 },
+                { y: .42, a: 60, f: .0026, s: .42, c: "45,212,191", w: 1.6 },
+                { y: .56, a: 38, f: .0038, s: .65, c: "14,138,138", w: 2.6 },
+                { y: .68, a: 52, f: .0029, s: .48, c: "242,196,107", w: 1.6 },
+                { y: .78, a: 34, f: .0042, s: .6, c: "244,160,174", w: 1.4 }
+            ];
+            const yAt = (l, x) => l.y * H + Math.sin(x * l.f + t * l.s + l.y * 9) * l.a + Math.sin(x * l.f * .5 - t * l.s * .7) * l.a * .5;
+            function size() {
+                const d = Math.min(devicePixelRatio || 1, 2);
+                W = cv.clientWidth; H = cv.clientHeight;
+                cv.width = W * d; cv.height = H * d; g.setTransform(d, 0, 0, d, 0, 0);
+            }
+            function draw() {
+                g.clearRect(0, 0, W, H);
+                lines.forEach((l, i) => {
+                    const grad = g.createLinearGradient(0, 0, W, 0);
+                    grad.addColorStop(0, `rgba(${l.c},0)`); grad.addColorStop(.5, `rgba(${l.c},.55)`); grad.addColorStop(1, `rgba(${l.c},0)`);
+                    g.strokeStyle = grad; g.lineWidth = l.w; g.beginPath();
+                    for (let x = 0; x <= W; x += 8) g[x ? "lineTo" : "moveTo"](x, yAt(l, x));
+                    g.stroke();
+                    // a coin travelling along each ribbon
+                    const px = ((t * .07 * (i % 2 ? -1 : 1) + i * .23) % 1 + 1) % 1 * W;
+                    g.fillStyle = `rgba(${l.c},.95)`; g.shadowColor = `rgba(${l.c},.9)`; g.shadowBlur = 14;
+                    g.beginPath(); g.arc(px, yAt(l, px), 3.2, 0, 7); g.fill(); g.shadowBlur = 0;
+                });
+            }
+            size(); addEventListener("resize", size);
+            if (reduce) draw();
+            else { let last = performance.now(); (function loop(now) { t += (now - last) / 1000; last = now; draw(); requestAnimationFrame(loop); })(last); }
+        })();
+    </script>
 </body>
 
 </html>

@@ -1207,7 +1207,7 @@ function updateAnalytics() {
                 {
                     label: "Income",
                     data: monthlyIncome,
-                    backgroundColor: "#16a34a",
+                    backgroundColor: "#12a36b",
                     borderRadius: 5
                 },
                 {
@@ -1257,8 +1257,8 @@ function updateAnalytics() {
             datasets: [{
                 label: "Net Savings",
                 data: monthlySavings,
-                borderColor: "#6d5ef5",
-                backgroundColor: "rgba(109, 94, 245, 0.12)",
+                borderColor: "#0e8a8a",
+                backgroundColor: "rgba(14, 138, 138, 0.14)",
                 fill: true,
                 tension: 0.3,
                 pointRadius: (context) => context.raw === 0 ? 0 : 5,
@@ -1334,16 +1334,8 @@ function updateAnalytics() {
                 datasets: [{
                     data: categoryValues,
                     backgroundColor: [
-                        "#6d5ef5",
-                        "#16a34a",
-                        "#e85d75",
-                        "#f59e0b",
-                        "#0ea5e9",
-                        "#8b5cf6",
-                        "#14b8a6",
-                        "#f97316",
-                        "#64748b",
-                        "#ec4899"
+                        "#0e8a8a", "#f2b84b", "#e0566b", "#3b82c4", "#12a36b",
+                        "#7c8fd6", "#5eead4", "#f08a4b", "#64748b", "#c46a9b"
                     ],
                     borderWidth: 2,
                     borderColor: "#ffffff"
